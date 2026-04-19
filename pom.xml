@@ -12,6 +12,7 @@
         <module>product-service</module>
         <module>inventory-service</module>
         <module>order-service</module>
+        <module>api-gateway</module>
         <!-- <module>order-service</module>
         <module>inventory-service</module>
         <module>notification-service</module>
