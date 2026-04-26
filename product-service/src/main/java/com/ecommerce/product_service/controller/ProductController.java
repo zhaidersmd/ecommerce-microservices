@@ -25,6 +25,12 @@ public class ProductController {
 
     @GetMapping("/products/{id}")
     public Product getById(@PathVariable Long id) {
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return service.getById(id);
     }
 }

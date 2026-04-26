@@ -1,10 +1,7 @@
-server:
-  port: 8080
 
 spring:
   application:
     name: api-gateway
-
   cloud:
     gateway:
       routes:
@@ -23,6 +20,10 @@ spring:
           predicates:
             - Path=/products/**
 
+        - id: auth-service
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/auth/**
 eureka:
   instance:
     ip-address: 127.0.0.1
@@ -30,3 +31,9 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
+server:
+  port: 8080
+
+logging:
+  level:
+    org.springframework.cloud.gateway : DEBUG

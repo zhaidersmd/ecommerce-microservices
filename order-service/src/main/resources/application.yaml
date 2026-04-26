@@ -5,6 +5,9 @@ spring:
   application:
     name: order-service
 
+  zipkin:
+    base-url: http://localhost:9411/
+
   datasource:
     url: jdbc:mysql://localhost:3306/order_db
     username: root
@@ -31,3 +34,44 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
+resilience4j:
+  retry:
+    instances:
+      productService:
+        max-retry-attempts: 5
+        wait-duration: 10s
+    retry-aspect-order: 2
+
+  circuitbreaker:
+    instances:
+      productService:
+        register-health-indicator: true
+        sliding-window-size: 5
+        minimum-number-of-calls: 3
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
+        permitted-number-of-calls-in-half-open-state: 2
+        automatic-transition-from-open-to-half-open-enabled: true
+        event-consumer-buffer-size: 10
+    circuit-breaker-aspect-order: 1
+
+  timelimiter:
+    instances:
+      productService:
+        timeout-duration: 2s
+        cancel-running-future: true
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+logging:
+  file:
+    name: /Users/zeeshanhaider/IdeaProjects/ecommerce-microservices/order-service/logs/elk-stack.log
